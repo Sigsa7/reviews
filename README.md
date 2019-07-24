@@ -32,7 +32,7 @@ Find reviews via various criteria. This method returns up to 10 results per requ
 #### Parameters
 
 | Name             | Type          | Description                                                            |
-| ---------------- |:-------------:| ----------------------------------------------------------------------:|
+| ---------------- |:-------------:| :----------------------------------------------------------------------|
 | `restaurantId`   | `integer`     | *Required.* Restaurant identifier for the targeted restaruant.         |
 | `sort`           | `string`      | Sorts the results of your query by ascending `post date`, or decending |
 |                  |               | `overall rating`, or decending `overall rating`.                       |
@@ -49,7 +49,7 @@ Update one review record in the database.
 #### Parameters
 
 | Name             | Type          | Description                                                            |
-| ---------------- |:-------------:| ----------------------------------------------------------------------:|
+| ---------------- |:-------------:| :----------------------------------------------------------------------|
 | `reviewId    `   | `integer`     | *Required.* Review identifier for the targeted review to be updated.   |
 | `foodRating`     | `integer`     |  Food rating score for the reviewed restaurant.                        |
 | `serviceRating`  | `integer`     |  Service rating score for the reviewed restaurant.                     |
@@ -68,5 +68,5 @@ Delete one review record from the database.
 #### Parameters
 
 | Name             | Type          | Description                                                            |
-| ---------------- |:-------------:| ----------------------------------------------------------------------:|
+| ---------------- |:-------------:| :----------------------------------------------------------------------|
 | `reviewId    `   | `integer`     | *Required.* Review identifier for the targeted review to be deleted.   |
