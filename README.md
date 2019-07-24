@@ -35,7 +35,8 @@ Find reviews via various criteria. This method returns up to 10 results per requ
 | ---------------- |:-------------:| ----------------------------------------------------------------------:|
 | `restaurantId`   | `integer`     | *Required.* Restaurant identifier for the targeted restaruant.         |
 | `sort`           | `string`      | Sorts the results of your query by ascending `post date`, or decending |
-|                  |               | rating, or decending rating. Default: descending `post date`.          |
+|                  |               | `overall rating`, or decending `overall rating`.                       |
+|                  |               | Default: descending `post date`.                                       |
 | `keyword`        | `string`      | Filter reviews of the restaurant by keyword(s).                        |
 | `star`           | `integer`     | Filter reviews of the restaurant by star(s).                           |
 
