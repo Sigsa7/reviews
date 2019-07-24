@@ -11,7 +11,7 @@ This method create one review record to the database.
 #### Parameters
 
 | Name             | Type          | Description                                                            |
-| ---------------- |:-------------:| ----------------------------------------------------------------------:|
+| ---------------- |:-------------:| :----------------------------------------------------------------------|
 | `userId`         | `integer`     | *Required.* User identifier.                                           |
 | `restaurantId`   | `integer`     | *Required.* Restaurant identifier for the reviewed restaruant.         |
 | `foodRating`     | `integer`     | *Required.* Food rating score for the reviewed restaurant.             |
