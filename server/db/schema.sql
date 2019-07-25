@@ -1,41 +1,37 @@
-DROP DATABASE IF EXISTS reservlyreviews;
-CREATE DATABASE reservlyreviews;
+CREATE DATABASE IF NOT EXISTS sigsa7_reviews;
 
-USE reservlyreviews;
-
-CREATE TABLE IF NOT EXISTS reviews (
-  reviewID INT NOT NULL AUTO_INCREMENT,
-  restaurantID INT,
-  userName VARCHAR(100),
-  userLocation VARCHAR(100),
-  userTotalReviews INT,
-  reviewDate DATE,
-  reviewOverallRating INT,
-  reviewFoodRating INT,
-  reviewServiceRating INT,
-  reviewAmbienceRating INT,
-  reviewValueRating INT,
-  reviewHelpfulCount INT,
-  reviewNoise INT,
-  reviewRecommend BOOLEAN,
-  reviewBody VARCHAR(2000),
-  PRIMARY KEY (reviewID)
-);
+USE sigsa7_reviews;
 
 CREATE TABLE IF NOT EXISTS restaurants (
-  restaurantID INT,
-  restaurantTotalReviews INT,
-  avgOverallRating DECIMAL(2,1) zerofill,
-  avgFoodRating DECIMAL(2,1),
-  avgServiceRating DECIMAL(2,1),
-  avgAmbienceRating DECIMAL(2,1),
-  avgValueRating DECIMAL(2,1),
-  avgNoiseRating INT,
-  avgRecRating INT,
-  keyWords VARCHAR(300),
-  neighborhood VARCHAR(50),
-  PRIMARY KEY (restaurantID)
+  id bigserial PRIMARY KEY,
+  restaurantName varchar(100) NOT NULL,
+  neighborhood varchar(100) NOT NULL,
+  keywords text[],
+  avgOverall real DEFAULT 0.0,
+  avgFood real DEFAULT 0.0,
+  avgService real DEFAULT 0.0,
+  avgAmbience real DEFAULT 0.0,
+  avgNoise real DEFAULT 0.0,
+  avgRecommend real DEFAULT 0.0,
 );
 
+CREATE TABLE IF NOT EXISTS users (
+  id bigserial PRIMARY KEY,
+  userName varchar(100) NOT NULL,
+  userLocation varchar(100) NOT NULL
+);
 
-
+CREATE TABLE IF NOT EXISTS reviews (
+  id bigserial NOT NULL PRIMARY KEY,
+  restaurantId bigserial REFERENCES restaurantName(id),
+  userId bigserial REFERENCES users(id),
+  foodRating smallint NOT NULL,
+  serviceRating smallint NOT NULL,
+  ambienceRating smallint NOT NULL,
+  valueRating smallint NOT NULL,
+  helpfulCount smallint DEFAULT 0,
+  reviewDate timestamp [(p)] [without time zone],
+  noise smallint NOT NULL,
+  recommended boolean NOT NULL,
+  reviewText varchar(1000) NOT NULL
+);
