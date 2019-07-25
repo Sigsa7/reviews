@@ -1,7 +1,3 @@
-CREATE DATABASE IF NOT EXISTS sigsa7_reviews;
-
-USE sigsa7_reviews;
-
 CREATE TABLE IF NOT EXISTS restaurants (
   id bigserial PRIMARY KEY,
   restaurantName varchar(100) NOT NULL,
@@ -12,7 +8,7 @@ CREATE TABLE IF NOT EXISTS restaurants (
   avgService real DEFAULT 0.0,
   avgAmbience real DEFAULT 0.0,
   avgNoise real DEFAULT 0.0,
-  avgRecommend real DEFAULT 0.0,
+  avgRecommend real DEFAULT 0.0
 );
 
 CREATE TABLE IF NOT EXISTS users (
@@ -23,14 +19,14 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS reviews (
   id bigserial NOT NULL PRIMARY KEY,
-  restaurantId bigserial REFERENCES restaurantName(id),
+  restaurantId bigserial REFERENCES restaurants(id),
   userId bigserial REFERENCES users(id),
   foodRating smallint NOT NULL,
   serviceRating smallint NOT NULL,
   ambienceRating smallint NOT NULL,
   valueRating smallint NOT NULL,
   helpfulCount smallint DEFAULT 0,
-  reviewDate timestamp [(p)] [without time zone],
+  reviewDate timestamp,
   noise smallint NOT NULL,
   recommended boolean NOT NULL,
   reviewText varchar(1000) NOT NULL
