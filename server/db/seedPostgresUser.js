@@ -2,7 +2,7 @@ const faker = require('faker');
 const fs = require('fs');
 
 const writeFile = fs.createWriteStream('./postgres_user.csv');
-writeFile.write('name, location');
+writeFile.write('userName, userLocation\n');
 // id	location	name
 let i = 1000000;
 const records = [];
