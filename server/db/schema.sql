@@ -1,3 +1,7 @@
+DROP TABLE reviews;
+DROP TABLE restaurants;
+DROP TABLE users;
+
 CREATE TABLE IF NOT EXISTS restaurants (
   id bigserial PRIMARY KEY,
   restaurantName varchar(100) NOT NULL,
@@ -26,8 +30,15 @@ CREATE TABLE IF NOT EXISTS reviews (
   ambienceRating smallint NOT NULL,
   valueRating smallint NOT NULL,
   helpfulCount smallint DEFAULT 0,
-  reviewDate timestamp,
+  reviewDate int,
   noise smallint NOT NULL,
   recommended boolean NOT NULL,
   reviewText varchar(1000) NOT NULL
 );
+
+COPY users(userName, userLocation) from '/Users/jenniezeng/Documents/HackReactor/Course/SDC/reviews/server/db/postgres_user.csv' DELIMITER ',' CSV HEADER;
+
+COPY restaurants(restaurantName, neighborhood, keywords) from '/Users/jenniezeng/Documents/HackReactor/Course/SDC/reviews/server/db/postgres_restaurants.csv' DELIMITER ',' CSV HEADER;
+
+COPY reviews(restaurantid,userid,foodrating,servicerating,ambiencerating,valuerating,noise,recommended,reviewdate,reviewtext) from '/Users/jenniezeng/Documents/HackReactor/Course/SDC/reviews/server/db/postgres_reviews.csv' DELIMITER ',' CSV HEADER;
+
