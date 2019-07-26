@@ -2,6 +2,7 @@ const fs = require('fs');
 const faker = require('faker');
 
 let reviewCount;
+let cpReviewCount;
 let review;
 
 let restaurant;
@@ -28,26 +29,28 @@ const generateRecord = () => {
   isRecommended = 0;
   notRecommended = 0;
 
-  reviewCount = Math.floor(Math.random() * 100);
+  reviewCount = Math.floor(Math.random() * 15);
+  cpReviewCount = reviewCount;
+
 
   while (reviewCount > 0) {
     review = {};
-    review.foodRating = Math.floor(Math.random() * 5);
-    review.serviceRating = Math.floor(Math.random() * 5);
-    review.ambienceRating = Math.floor(Math.random() * 5);
-    review.valueRating = Math.floor(Math.random() * 5);
+    review.foodRating = Math.floor(Math.random() * 5) + 1;
+    review.serviceRating = Math.floor(Math.random() * 5) + 1;
+    review.ambienceRating = Math.floor(Math.random() * 5) + 1;
+    review.valueRating = Math.floor(Math.random() * 5) + 1;
     review.helpfulCount = 0;
-    review.noise = Math.floor(Math.random() * 5);
+    review.noise = Math.floor(Math.random() * 5) + 1;
     review.reviewdate = faker.date.past();
     review.recommend = Math.random() <= 0.5;
-    review.reviewText = faker.lorem.paragraph();
+    review.reviewText = faker.lorem.paragraph(2);
     review.user = {};
     review.user.name = `${faker.name.firstName()} ${faker.name.lastName()}`;
     review.user.location = faker.address.city();
 
     restaurant.reviews.push(review);
 
-    foodRating += review.foodRating；
+    foodRating += review.foodRating;
     serviceRating += review.serviceRating;
     ambienceRating += review.ambienceRating;
     valueRating += review.valueRating;
@@ -62,18 +65,18 @@ const generateRecord = () => {
     reviewCount --;
   }
 
-  restaurant.avgFoodRating = foodRating / reviewCount;
-  restaurant.avgServiceRating = serviceRating / reviewCount;
-  restaurant.avgAmbienceRating = ambienceRating / reviewCount;
-  restaurant.avgValueRating = valueRating / reviewCount;
-  restaurant.avgNoise = noise / reviewCount;
+  restaurant.avgFoodRating = foodRating / cpReviewCount;
+  restaurant.avgServiceRating = serviceRating / cpReviewCount;
+  restaurant.avgAmbienceRating = ambienceRating / cpReviewCount;
+  restaurant.avgValueRating = valueRating / cpReviewCount;
+  restaurant.avgNoise = noise / cpReviewCount;
   restaurant.recommend = isRecommended / (isRecommended + notRecommended);
 
   return JSON.stringify(restaurant) + '\n';
 }
 
 const seeding = () => {
-  const writeFile = fs.createWriteStream('./mongo_data.csv');
+  const writeFile = fs.createWriteStream('./mongo_data.json');
 
   const write = () => {
     let i = 10;
