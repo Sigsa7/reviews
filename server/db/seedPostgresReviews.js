@@ -14,6 +14,21 @@ let noise;
 let recommended;
 let reviewtext;
 let randomReviewCount;
+let normalized;
+
+const randn_bm = (min, max, skew) => {
+  let u = 0, v = 0;
+  while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
+  while(v === 0) v = Math.random();
+  let num = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+
+  num = num / 10.0 + 0.5; // Translate to 0 -> 1
+  if (num > 1 || num < 0) num = randn_bm(min, max, skew); // resample between 0 and 1 if out of range
+  num = Math.pow(num, skew); // Skew
+  num *= max - min; // Stretch to fill range
+  num += min; // offset to min
+  return num;
+}
 
 const generateRecord = (restaurantid) => {
   userid = Math.floor(Math.random() * 1000000) + 1;
@@ -32,6 +47,9 @@ const generateRecord = (restaurantid) => {
 const seeding = () => {
   let i = 10000000;
   let data;
+  let greaterThan50 = 0;
+  let greaterThan20 = 0;
+  let lessThan1 = 0;
 
   const writeFile = fs.createWriteStream('./postgres_reviews.csv');
   writeFile.write('restaurantid,userid,foodrating,servicerating,ambiencerating,valuerating,noise,recommended,reviewdate,reviewtext\n');
@@ -42,11 +60,12 @@ const seeding = () => {
     do {
       i--;
 
-      if (i % 100000 === 0) {
-        console.log(i)
-      }
+      normalized = randn_bm(0, 1, 5);
+      randomReviewCount = normalized * 100;
 
-      randomReviewCount = Math.floor(Math.random() * 15);
+      if (randomReviewCount > 50) {
+        console.log(randomReviewCount)
+      }
 
       while (randomReviewCount > 0) {
         data = generateRecord(i);
