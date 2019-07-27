@@ -63,10 +63,6 @@ const seeding = () => {
       normalized = randn_bm(0, 1, 5);
       randomReviewCount = normalized * 100;
 
-      if (randomReviewCount > 50) {
-        console.log(randomReviewCount)
-      }
-
       while (randomReviewCount > 0) {
         data = generateRecord(i);
         if (i === 1) {
