@@ -1,25 +1,26 @@
 DROP TABLE reviews;
 DROP TABLE restaurants;
-DROP TABLE users;
+-- DROP TABLE users;
 
 CREATE TABLE IF NOT EXISTS restaurants (
   id bigserial PRIMARY KEY,
   restaurantName varchar(100) NOT NULL,
   neighborhood varchar(100) NOT NULL,
   keywords text[],
-  avgOverall real DEFAULT 0.0,
-  avgFood real DEFAULT 0.0,
-  avgService real DEFAULT 0.0,
-  avgAmbience real DEFAULT 0.0,
-  avgNoise real DEFAULT 0.0,
-  avgRecommend real DEFAULT 0.0
+  avgOverall real,
+  avgFood real,
+  avgService real,
+  avgAmbience real,
+  avgValue real,
+  avgNoise real,
+  avgRecommend real
 );
 
-CREATE TABLE IF NOT EXISTS users (
-  id bigserial PRIMARY KEY,
-  userName varchar(100) NOT NULL,
-  userLocation varchar(100) NOT NULL
-);
+-- CREATE TABLE IF NOT EXISTS users (
+--   id bigserial PRIMARY KEY,
+--   userName varchar(100) NOT NULL,
+--   userLocation varchar(100) NOT NULL
+-- );
 
 CREATE TABLE IF NOT EXISTS reviews (
   id bigserial NOT NULL PRIMARY KEY,

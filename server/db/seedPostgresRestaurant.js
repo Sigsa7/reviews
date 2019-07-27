@@ -10,6 +10,13 @@ const generateRecord = () => {
   restaurantName = faker.lorem.word();
   neighborhood = faker.address.city();
   keywords = `"{${faker.lorem.word()}, ${faker.lorem.word()}, ${faker.lorem.word()}}"`;
+  avgOverall = Math.round(Math.random() * 4 * 100) / 100 + 1;
+  avgFood = Math.round(Math.random() * 4 * 100) / 100 + 1;
+  avgService = Math.round(Math.random() * 4 * 100) / 100 + 1;
+  avgAmbience = Math.round(Math.random() * 4 * 100) / 100 + 1;
+  avgValue = Math.round(Math.random() * 4 * 100) / 100 + 1;
+  avgNoise = Math.round(Math.random() * 4 * 100) / 100 + 1;
+  avgRecommend = Math.round(Math.random()* 100) / 100;
 
  return `${restaurantName},${neighborhood},${keywords}\n`;
 }
