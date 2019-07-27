@@ -42,3 +42,5 @@ COPY restaurants(restaurantName, neighborhood, keywords) from '/Users/jenniezeng
 
 COPY reviews(restaurantid,userid,foodrating,servicerating,ambiencerating,valuerating,noise,recommended,reviewdate,reviewtext) from '/Users/jenniezeng/Documents/HackReactor/Course/SDC/reviews/server/db/postgres_reviews.csv' DELIMITER ',' CSV HEADER;
 
+CREATE index idx_restaurant_id ON reviews(restaurantId);
+CREATE index idx_user_id ON reviews(userId);
