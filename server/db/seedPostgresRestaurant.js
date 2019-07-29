@@ -18,7 +18,7 @@ const generateRecord = () => {
   avgNoise = Math.round(Math.random() * 4 * 100) / 100 + 1;
   avgRecommend = Math.round(Math.random()* 100) / 100;
 
- return `${restaurantName},${neighborhood},${keywords}\n`;
+ return `${restaurantName},${neighborhood},${keywords},${avgOverall},${avgFood},${avgService},${avgAmbience},${avgValue},${avgNoise},${avgRecommend}\n`;
 }
 
 const seeding = () => {
