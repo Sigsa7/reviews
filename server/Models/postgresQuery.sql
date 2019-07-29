@@ -12,14 +12,17 @@ SELECT * FROM reviews
   WHERE restaurantId=893949
   ORDER BY reviewDate DESC;
 
--- GET THE INFO FOR A RESTAURANT
+-- GET THE INFO AND REVIEWS FOR A RESTAURANT SORT BY POST DATE
 
 EXPLAIN ANALYZE
 SELECT * FROM restaurants
-  WHERE restaurantId=893949;
+  INNER JOIN reviews
+    ON restaurants.id=reviews.restaurantid
+  WHERE restaurants.id=9999
+  ORDER BY reviews.reviewdate DESC;
 
 -- UPDATE A REVIEW'S HELPFUL COUNT
-
+EXPLAIN ANALYZE
 UPDATE reviews
   SET helpfulCount = helpfulCount + 1
 WHERE
