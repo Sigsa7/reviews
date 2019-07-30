@@ -5,3 +5,4 @@ config/reviews.pem
 server/db/postgres_user.csv
 server/db/postgres_restaurants.csv
 server/db/postgres_reviews.csv
+server/db/mongo_data.json
