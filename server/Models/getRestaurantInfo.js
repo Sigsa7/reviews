@@ -32,7 +32,7 @@ const getRestaurantInfo = (req, res) => {
     selectStr = ', ' + orderByStr + ' AS avg_overal_from_reviews';
   }
 
-  if (star !== '') {
+  if (star !== undefined) {
     starStr = `AND CAST((reviews.foodrating+reviews.servicerating+reviews.ambiencerating+reviews.valuerating) AS FLOAT)/4 >= ${star} AND CAST((reviews.foodrating+reviews.servicerating+reviews.ambiencerating+reviews.valuerating) AS FLOAT)/4 < ${star + 1}`;
   }
 
@@ -41,6 +41,8 @@ const getRestaurantInfo = (req, res) => {
       SELECT *${selectStr} FROM restaurants
         INNER JOIN reviews
           ON restaurants.id=reviews.restaurantid
+        INNER JOIN users
+          ON users.id=reviews.userid
         WHERE
           restaurants.id=$1
           ${keywordStr}
@@ -52,6 +54,21 @@ const getRestaurantInfo = (req, res) => {
     `,
     values: [ restaurantId ],
   };
+
+//   SELECT
+
+// FROM
+//   reviews AS rev
+// INNER JOIN
+//   restaurant AS res
+//   ON rev.restaurantid = res.id
+// INNER JOIN
+//   users AS u
+//   ON rev.userid = u.id
+// WHERE
+//   res.id = something;
+
+  console.log(query.text)
 
   pg.query(query, (err, data) => {
     if (err) {
