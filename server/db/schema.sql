@@ -1,6 +1,6 @@
 DROP TABLE reviews;
 DROP TABLE restaurants;
--- DROP TABLE users;
+DROP TABLE users;
 
 CREATE TABLE IF NOT EXISTS restaurants (
   id bigserial PRIMARY KEY,
@@ -16,11 +16,11 @@ CREATE TABLE IF NOT EXISTS restaurants (
   avgRecommend real
 );
 
--- CREATE TABLE IF NOT EXISTS users (
---   id bigserial PRIMARY KEY,
---   userName varchar(100) NOT NULL,
---   userLocation varchar(100) NOT NULL
--- );
+CREATE TABLE IF NOT EXISTS users (
+  id bigserial PRIMARY KEY,
+  userName varchar(100) NOT NULL,
+  userLocation varchar(100) NOT NULL
+);
 
 CREATE TABLE IF NOT EXISTS reviews (
   id bigserial NOT NULL PRIMARY KEY,
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS reviews (
 
 COPY users(userName, userLocation) from '/Users/jenniezeng/Documents/HackReactor/Course/SDC/reviews/server/db/postgres_user.csv' DELIMITER ',' CSV HEADER;
 
-COPY restaurants(restaurantName, neighborhood, keywords) from '/Users/jenniezeng/Documents/HackReactor/Course/SDC/reviews/server/db/postgres_restaurants.csv' DELIMITER ',' CSV HEADER;
+COPY restaurants(restaurantName, neighborhood, keywords,avgOverall,avgFood,avgService,avgAmbience,avgValue,avgNoise,avgRecommend) from '/Users/jenniezeng/Documents/HackReactor/Course/SDC/reviews/server/db/postgres_restaurants.csv' DELIMITER ',' CSV HEADER;
 
 COPY reviews(restaurantid,userid,foodrating,servicerating,ambiencerating,valuerating,noise,recommended,reviewdate,reviewtext) from '/Users/jenniezeng/Documents/HackReactor/Course/SDC/reviews/server/db/postgres_reviews.csv' DELIMITER ',' CSV HEADER;
 
