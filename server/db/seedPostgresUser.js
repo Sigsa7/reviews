@@ -3,16 +3,15 @@ const fs = require('fs');
 
 const writeFile = fs.createWriteStream('./postgres_user.csv');
 writeFile.write('userName, userLocation\n');
-// id	location	name
+
 let i = 1000000;
-const records = [];
 
 let location;
 let name;
 
 while (i >= 0) {
   location = faker.address.city();
-  name = faker.lorem.word();
+  name = `${faker.name.firstName()} ${faker.name.lastName()}`;
 
   writeFile.write(`${name},${location}\n`);
 

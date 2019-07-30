@@ -47,9 +47,6 @@ const generateRecord = (restaurantid) => {
 const seeding = () => {
   let i = 10000000;
   let data;
-  let greaterThan50 = 0;
-  let greaterThan20 = 0;
-  let lessThan1 = 0;
 
   const writeFile = fs.createWriteStream('./postgres_reviews.csv');
   writeFile.write('restaurantid,userid,foodrating,servicerating,ambiencerating,valuerating,noise,recommended,reviewdate,reviewtext\n');

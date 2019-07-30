@@ -15,7 +15,7 @@ const generateRecord = () => {
   avgService = Math.round(Math.random() * 4 * 100) / 100 + 1;
   avgAmbience = Math.round(Math.random() * 4 * 100) / 100 + 1;
   avgValue = Math.round(Math.random() * 4 * 100) / 100 + 1;
-  avgNoise = Math.round(Math.random() * 4 * 100) / 100 + 1;
+  avgNoise = Math.round(Math.random() * 10 * 100) / 100 + 1;
   avgRecommend = Math.round(Math.random()* 100) / 100;
 
  return `${restaurantName},${neighborhood},${keywords},${avgOverall},${avgFood},${avgService},${avgAmbience},${avgValue},${avgNoise},${avgRecommend}\n`;
@@ -26,7 +26,7 @@ const seeding = () => {
   let data;
 
   const writeFile = fs.createWriteStream('./postgres_restaurants.csv');
-  writeFile.write('restaurantname,neighborhood,keywords\n');
+  writeFile.write('restaurantname,neighborhood,keywords,avgOverall,avgFood,avgService,avgAmbience,avgValue,avgNoise,avgRecommend\n');
 
 
   const write = () => {
