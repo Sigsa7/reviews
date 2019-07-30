@@ -1,7 +1,7 @@
 const db = require('../db');
 
 const updateReview = (req, res) => {
-  const { restaurantId, reviewId } = req.params;
+  const { reviewId } = req.params;
 
   const query = {
     name: 'update-a-review',
@@ -10,17 +10,15 @@ const updateReview = (req, res) => {
         SET helpfulCount = helpfulCount + 1
       WHERE
         id=$1
-        AND
-        restaurantid=$2;
+      RETURNING *;
     `,
-    values: [ reviewId, restaurantId ],
+    values: [ reviewId ],
   };
 
   db.query(query, (err, data) => {
     if (err) {
       res.status(500).json(err);
     } else {
-      console.log(data.rows);
       res.status(201).json(data.rows);
     }
   });
