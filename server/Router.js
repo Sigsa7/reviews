@@ -1,6 +1,8 @@
 const express = require('express');
 const createReviews = require('./Models/createReviews');
 const getRestaurantInfo = require('./Models/getRestaurantInfo');
+const updateReview = require('./Models/updateReview');
+const deleteReview = require('./Models/deleteReview');
 
 const router = express.Router();
 
