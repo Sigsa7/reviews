@@ -37,7 +37,7 @@ Find reviews via various criteria. This method returns up to 10 results per requ
 | ---------------- |:-------------:| :----------------------------------------------------------------------|
 | `restaurantId`   | `integer`     | *Required.* Restaurant identifier for the targeted restaruant.         |
 | `sort`           | `string`      | Sorts the results of your query by ascending `post date`, or decending<br>`overall rating`, or decending `overall rating`. <br>Default: descending `post date`.          |
-| `keyword`        | `string`      | Filter reviews of the restaurant by keyword(s).                        |
+| `keyword`        | `array `      | Filter reviews of the restaurant by keyword(s).                        |
 | `star`           | `integer`     | Filter reviews of the restaurant by star(s).                           |
 
 ### Response
@@ -53,24 +53,17 @@ Find reviews via various criteria. This method returns up to 10 results per requ
 | `avgNoise`         | `float`      | An average noise rating of the restaurant from all the reviews         |
 | `avgRecommend`     | `float`      | The average recommendation rate of the restaurant from all the reviews |
 
-### Update (PUT)
+### Update (PATCH)
 
-Update one review record in the database.
+Update one review's helpful count in the database.
 
-`PUT /:restaurantId/`
+`PATCH /:restaurantId/:reviewId`
 
-#### Body
+#### Parameter
 
 | Name             | Type          | Description                                                            |
 | ---------------- |:-------------:| :----------------------------------------------------------------------|
 | `reviewId    `   | `integer`     | *Required.* Review identifier for the targeted review to be updated.   |
-| `foodRating`     | `integer`     |  Food rating score for the reviewed restaurant.                        |
-| `serviceRating`  | `integer`     |  Service rating score for the reviewed restaurant.                     |
-| `ambienceRating` | `integer`     |  Ambience rating score for the reviewed restaurant.                    |
-| `valueRating`    | `integer`     |  Value rating score for the reviewed restaurant.                       |
-| `noise`          | `integer`     |  Noise rating score for the reviewed restaurant.                       |
-| `recommend`      | `boolean`     |  Whether or not the user recommend the reviewed restaurant.            |
-| `text`           | `string`      |  The review description.                                               |
 
 ### Delete (DELETE)
 
