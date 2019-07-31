@@ -1,31 +1,39 @@
-const restaurants = {
+const restaurants = [
   {
-    id: 0,
-    name: '',
-    keywords: ['',''],
-    reviews: [
-      {
-        user: {
-          name: '',
-          location: '',
-        },
-        reviewText: '',
-        foodRating: 0,
-        serviceRating: 0,
-        ambienceRating: 0,
-        valueRating: 0,
-        noise: 0,
-        helpfulCount: 0,
-        reviewDate: '9/1/10 7:00 pm',
-        recommended: true,
-      }
-    ],
-    avgOverall: 0,
-    avgFoodRating: 0,
-    avgValRating: 0,
-    avgServiceRating: 0,
-    avgNoise: 0,
-    avgFoodRating: 0,
-    avgRecommend: 0,
+    restaurantId: integer (1 - 10000000)
+    restaurantName: '',
+    neighborhood: '',
+    keywords: [],
+    avgOverall: real,
+    avgFood: real,
+    avgService: real,
+    avgAmbience: real,
+    avgValue: real,
+    avgNoise: real,
+    avgRecommend: real,
   }
-}
+];
+
+const reviews = [
+  {
+    restaurantId: bigserial,
+    userId: serial,
+    foodRating: smallint,
+    serviceRating: smallint,
+    ambienceRating: smallint,
+    valueRating: smallint,
+    helpfulCount: smallint DEFAULT 0,
+    reviewDate: int,
+    noise: smallint,
+    recommended: boolean,
+    reviewText: varchar(1000),
+  }
+];
+
+const users = [
+  {
+    userId: integer,
+    userName: '',
+    location: '',
+  }
+]
