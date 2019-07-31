@@ -26,10 +26,11 @@ const generateRecord = (restaurantid) => {
   valuerating = Math.floor(Math.random() * 5) + 1;
   noise = Math.floor(Math.random() * 10) + 1;
   recommended = Math.random() >= 0.5;
+  helpfulCount = 0;
   reviewdate = Number(today.clone().subtract(Math.random() * 700, 'day').format('X'));
   reviewtext = faker.lorem.paragraph(2);
 
-  return `${restaurantid},${userid},${foodrating},${servicerating},${ambiencerating},${valuerating},${noise},${recommended},${reviewdate},"${reviewtext}"\n`;
+  return `${restaurantid},${userid},${foodrating},${servicerating},${ambiencerating},${valuerating},${noise},${helpfulCount},${recommended},${reviewdate},"${reviewtext}"\n`;
 }
 
 const seeding = () => {
@@ -37,7 +38,7 @@ const seeding = () => {
   let data;
 
   const writeFile = fs.createWriteStream('./mongoReviews.csv');
-  writeFile.write('restaurantid,userid,foodrating,servicerating,ambiencerating,valuerating,noise,recommended,reviewdate,reviewtext\n');
+  writeFile.write('restaurantid,userid,foodrating,servicerating,ambiencerating,valuerating,noise,helpfulCount,recommended,reviewdate,reviewtext\n');
 
 
   const write = () => {
