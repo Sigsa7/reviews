@@ -2,6 +2,7 @@ const express = require('express');
 const expressStaticGzip = require('express-static-gzip');
 const path = require('path');
 const router = require('./Router.js');
+const newrelic = require('newrelic');
 
 const app = express();
 
