@@ -8,7 +8,7 @@ const deleteReview = (req, res) => {
     text: `
       DELETE FROM reviews
         WHERE
-          id=$1
+          id=$1;
     `,
     values: [ reviewId ],
   };
