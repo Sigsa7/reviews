@@ -55,22 +55,6 @@ const getRestaurantInfo = (req, res) => {
     values: [ restaurantId ],
   };
 
-  SELECT *, CAST((reviews.foodrating+reviews.servicerating+reviews.ambiencerating+reviews.valuerating) AS FLOAT)/4 FROM restaurants
-  INNER JOIN reviews
-    ON restaurants.id=reviews.restaurantid
-  INNER JOIN users
-    ON users.id=reviews.userid
-  WHERE
-    restaurants.id=999999
-  AND reviews.reviewText LIKE '%et%'
-  AND CAST((reviews.foodrating+reviews.servicerating+reviews.ambiencerating+reviews.valuerating) AS FLOAT)/4 >= 2 AND CAST((reviews.foodrating+reviews.servicerating+reviews.ambiencerating+reviews.valuerating) AS FLOAT)/4 < 3
-  ORDER BY
-    CAST((reviews.foodrating+reviews.servicerating+reviews.ambiencerating+reviews.valuerating) AS FLOAT)/4 DESC,
-    reviews.reviewdate DESC
-  LIMIT 10;
-
-  console.log(query.text)
-
   pg.query(query, (err, data) => {
     if (err) {
       console.log(err);
