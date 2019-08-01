@@ -1,6 +1,6 @@
 const pg = require('../db');
 
-const createReivews = (req, res) => {
+const createReivews = async (req, res) => {
   const { restaurantId } = req.params;
 
   const {
@@ -35,13 +35,12 @@ const createReivews = (req, res) => {
     ],
   };
 
-  pg.query(query, (err, data) => {
-    if (err) {
-      res.status(500).json(err);
-    } else {
-      res.status(201).json(data.rows);
-    }
-  });
+  try {
+    const data = pg.query(query);
+    res.status(201).json(data.rows);
+  } catch (e) {
+    res.status(500).json(e);
+  }
 
 };
 

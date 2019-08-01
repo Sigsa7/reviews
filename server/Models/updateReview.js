@@ -1,4 +1,4 @@
-const db = require('../db');
+const pg = require('../db');
 
 const updateReview = (req, res) => {
   const { reviewId } = req.params;
@@ -15,13 +15,13 @@ const updateReview = (req, res) => {
     values: [ reviewId ],
   };
 
-  db.query(query, (err, data) => {
-    if (err) {
-      res.status(500).json(err);
-    } else {
-      res.status(201).json(data.rows);
-    }
-  });
+  try {
+    const data = pg.query(query);
+    res.status(201).json(data.rows);
+  } catch (e) {
+    res.status(500).json(e);
+  }
+
 }
 
 module.exports = updateReview;

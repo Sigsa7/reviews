@@ -1,6 +1,6 @@
 const pg = require('../db');
 
-const getRestaurantInfo = (req, res) => {
+const getRestaurantInfo = async (req, res) => {
   const { restaurantId } = req.params;
 
   const { sort, keywords, star } = req.body;
@@ -55,13 +55,12 @@ const getRestaurantInfo = (req, res) => {
     values: [ restaurantId ],
   };
 
-  pg.query(query, (err, data) => {
-    if (err) {
-      res.status(500).json(err);
-    } else {
-      res.status(200).json(data.rows);
-    }
-  });
+  try {
+    const data = await pg.query(query);
+    res.status(200).json(data.rows);
+  } catch (e) {
+    res.status(500).json(e);
+  }
 };
 
 module.exports = getRestaurantInfo;

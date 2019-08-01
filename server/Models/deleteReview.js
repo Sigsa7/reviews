@@ -1,6 +1,6 @@
-const db = require('../db');
+const pg = require('../db');
 
-const deleteReview = (req, res) => {
+const deleteReview = async (req, res) => {
   const { reviewId } = req.params;
 
   const query = {
@@ -13,13 +13,12 @@ const deleteReview = (req, res) => {
     values: [ reviewId ],
   };
 
-  db.query(query, (err, data) => {
-    if (err) {
-      res.status(500).json(err);
-    } else {
-      res.status(201).json(data);
-    }
-  });
+  try {
+    const data = pg.query(query);
+    res.status(201).json(data);
+  } catch (e) {
+    res.status(500).json(e);
+  }
 }
 
 module.exports = deleteReview;
