@@ -1,41 +1,47 @@
-DROP DATABASE IF EXISTS reservlyreviews;
-CREATE DATABASE reservlyreviews;
-
-USE reservlyreviews;
-
-CREATE TABLE IF NOT EXISTS reviews (
-  reviewID INT NOT NULL AUTO_INCREMENT,
-  restaurantID INT,
-  userName VARCHAR(100),
-  userLocation VARCHAR(100),
-  userTotalReviews INT,
-  reviewDate DATE,
-  reviewOverallRating INT,
-  reviewFoodRating INT,
-  reviewServiceRating INT,
-  reviewAmbienceRating INT,
-  reviewValueRating INT,
-  reviewHelpfulCount INT,
-  reviewNoise INT,
-  reviewRecommend BOOLEAN,
-  reviewBody VARCHAR(2000),
-  PRIMARY KEY (reviewID)
-);
+DROP TABLE reviews;
+DROP TABLE restaurants;
+DROP TABLE users;
 
 CREATE TABLE IF NOT EXISTS restaurants (
-  restaurantID INT,
-  restaurantTotalReviews INT,
-  avgOverallRating DECIMAL(2,1) zerofill,
-  avgFoodRating DECIMAL(2,1),
-  avgServiceRating DECIMAL(2,1),
-  avgAmbienceRating DECIMAL(2,1),
-  avgValueRating DECIMAL(2,1),
-  avgNoiseRating INT,
-  avgRecRating INT,
-  keyWords VARCHAR(300),
-  neighborhood VARCHAR(50),
-  PRIMARY KEY (restaurantID)
+  id bigserial PRIMARY KEY,
+  restaurantName varchar(100) NOT NULL,
+  neighborhood varchar(100) NOT NULL,
+  keywords text[],
+  avgOverall real,
+  avgFood real,
+  avgService real,
+  avgAmbience real,
+  avgValue real,
+  avgNoise real,
+  avgRecommend real
 );
 
+CREATE TABLE IF NOT EXISTS users (
+  id bigserial PRIMARY KEY,
+  userName varchar(100) NOT NULL,
+  userLocation varchar(100) NOT NULL
+);
 
+CREATE TABLE IF NOT EXISTS reviews (
+  id bigserial NOT NULL PRIMARY KEY,
+  restaurantId bigserial REFERENCES restaurants(id),
+  userId bigserial REFERENCES users(id),
+  foodRating smallint NOT NULL,
+  serviceRating smallint NOT NULL,
+  ambienceRating smallint NOT NULL,
+  valueRating smallint NOT NULL,
+  helpfulCount smallint DEFAULT 0,
+  reviewDate int,
+  noise smallint NOT NULL,
+  recommended boolean NOT NULL,
+  reviewText varchar(1000) NOT NULL
+);
 
+COPY users(userName, userLocation) from '/Users/jenniezeng/Documents/HackReactor/Course/SDC/reviews/server/db/postgres_user.csv' DELIMITER ',' CSV HEADER;
+
+COPY restaurants(restaurantName, neighborhood, keywords,avgOverall,avgFood,avgService,avgAmbience,avgValue,avgNoise,avgRecommend) from '/Users/jenniezeng/Documents/HackReactor/Course/SDC/reviews/server/db/postgres_restaurants.csv' DELIMITER ',' CSV HEADER;
+
+COPY reviews(restaurantid,userid,foodrating,servicerating,ambiencerating,valuerating,noise,recommended,reviewdate,reviewtext) from '/Users/jenniezeng/Documents/HackReactor/Course/SDC/reviews/server/db/postgres_reviews.csv' DELIMITER ',' CSV HEADER;
+
+CREATE index idx_restaurant_id ON reviews(restaurantId);
+CREATE index idx_user_id ON reviews(userId);

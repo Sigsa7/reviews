@@ -1,13 +1,15 @@
-const mysql = require('mysql');
+const { Pool } = require('pg');
 
-const connection = mysql.createConnection({
-  host: '172.17.0.2',
-  // host: 'localhost',
-  user: 'root',
-  database: 'reservlyreviews',
-  password: 'password'
-});
+const connectionStr = {
+  host: 'localhost', // server name or IP address;
+  port: 5432,
+  database: 'sigsa7_reviews',
+  user: 'jenniezeng',
+  password: '',
+};
 
-connection.connect();
+const pool = new Pool(connectionStr);
 
-module.exports.connection = connection;
+pool.connect();
+
+module.exports = pool;
