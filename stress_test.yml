@@ -1,0 +1,22 @@
+config:
+  target: "http://localhost:3004"
+  processor: "./stressTestFunctions.js"
+  phases:
+    - duration: 1
+      arrivalRate: 100
+    - duration: 1
+      arrivalRate: 100
+      rampTo: 5000
+    - duration: 1
+      arrivalRate: 10000
+scenarios:
+  - name: "Get Reviews and info for A Restaurant"
+    flow:
+      - function: "generateGetRequestData"
+      - get:
+          url: "/{{ restaurantId }}/reviews"
+          json:
+            sort: "{{ sort }}"
+            star: "{{ star }}"
+            keywords: "{{ keywords }}"
+      # - log: "Sent a get request to /{{ restaurantId }} with {{ sort }}, {{ star }}, {{ keywords }}"
