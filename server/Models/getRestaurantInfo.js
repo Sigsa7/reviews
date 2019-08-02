@@ -58,7 +58,6 @@ const getRestaurantInfo = async (req, res) => {
   return redis.get(query.text, async (err, result) => {
     if (result) {
       const jsonResult = JSON.parse(result);
-      console.log('cached')
       return res.status(200).json(jsonResult.rows);
 
     } else {
