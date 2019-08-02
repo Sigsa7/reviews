@@ -10,3 +10,4 @@ server/db/mongoReviews.csv
 server/db/mongoUsers.csv
 newrelic.js
 newrelic_agent.log
+dump.rdb

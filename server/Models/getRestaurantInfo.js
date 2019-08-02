@@ -1,4 +1,5 @@
 const pg = require('../db');
+const redis = require('../db/redisConnection');
 
 const getRestaurantInfo = async (req, res) => {
   const { restaurantId } = req.params;
@@ -44,7 +45,7 @@ const getRestaurantInfo = async (req, res) => {
         INNER JOIN users
           ON users.id=reviews.userid
         WHERE
-          restaurants.id=$1
+          restaurants.id=${restaurantId}
           ${keywordStr}
           ${starStr}
         ORDER BY
@@ -52,15 +53,25 @@ const getRestaurantInfo = async (req, res) => {
           reviews.reviewdate DESC
         LIMIT 10;
     `,
-    values: [ restaurantId ],
   };
 
-  try {
-    const data = await pg.query(query);
-    res.status(200).json(data.rows);
-  } catch (e) {
-    res.status(500).json(e);
-  }
+  return redis.get(query.text, async (err, result) => {
+    if (result) {
+      const jsonResult = JSON.parse(result);
+      console.log('cached')
+      return res.status(200).json(jsonResult.rows);
+
+    } else {
+      try {
+        const data = await pg.query(query);
+        const stringfyData = JSON.stringify(data);
+        redis.setex(query.text, 1800, stringfyData);
+        return res.status(200).json(data.rows);
+      } catch (e) {
+        return res.status(500).json(e);
+      }
+    }
+  });
 };
 
 module.exports = getRestaurantInfo;
