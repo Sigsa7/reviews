@@ -5,23 +5,24 @@ const getRestaurantInfo = async (req, res) => {
   const { restaurantId } = req.params;
 
   const { sort, keywords, star } = req.body;
+  let comma = '';
   let orderByStr = '';
-  let selectStr = orderByStr;
+  let selectStr = '';
   let sortDirection = '';
   let keywordStr = '';
   let starStr = '';
 
   if (sort === 'highest rating') {
-    orderByStr = ', CAST((reviews.foodrating+reviews.servicerating+reviews.ambiencerating+reviews.valuerating) AS FLOAT)/4  AS avg_overal_from_reviews';
+    comma = ',';
+    orderByStr = 'CAST((reviews.foodrating+reviews.servicerating+reviews.ambiencerating+reviews.valuerating) AS FLOAT)/4  AS avg_overal_from_reviews';
     sortDirection = ' DESC,';
-  }
-
-  if (sort === 'lowest rating') {
-    orderByStr = ', CAST((reviews.foodrating+reviews.servicerating+reviews.ambiencerating+reviews.valuerating) AS FLOAT)/4 AS avg_overal_from_reviews';
+  } else if (sort === 'lowest rating') {
+    comma = ',';
+    orderByStr = 'CAST((reviews.foodrating+reviews.servicerating+reviews.ambiencerating+reviews.valuerating) AS FLOAT)/4 AS avg_overal_from_reviews';
     sortDirection = ' ASC,';
   }
 
-  if (keywords.length !== 0) {
+  if (keywords!== undefined || keywords.length !== 0) {
     for (let i = 0; i < keywords.length; i ++) {
       keywordStr += `AND reviews.reviewText LIKE '%${keywords[i]}%' `;
     }
@@ -39,7 +40,7 @@ const getRestaurantInfo = async (req, res) => {
 
   const query = {
     text: `
-      SELECT *${orderByStr} FROM restaurants
+      SELECT * ${comma} ${orderByStr} FROM restaurants
         INNER JOIN reviews
           ON restaurants.id=reviews.restaurantid
         INNER JOIN users
@@ -63,8 +64,7 @@ const getRestaurantInfo = async (req, res) => {
     } else {
       try {
         const data = await pg.query(query);
-        const stringfyData = JSON.stringify(data);
-        redis.setex(query.text, 1800, stringfyData);
+        redis.setex(query.text, 1800, JSON.stringify(data));
         return res.status(200).json(data.rows);
       } catch (e) {
         return res.status(500).json(e);
