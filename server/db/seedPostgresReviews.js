@@ -9,6 +9,7 @@ let foodrating;
 let servicerating;
 let ambiencerating;
 let valuerating;
+let avgrating;
 let reviewdate;
 let noise;
 let recommended;
@@ -36,12 +37,13 @@ const generateRecord = (restaurantid) => {
   servicerating = Math.floor(Math.random() * 5) + 1;
   ambiencerating = Math.floor(Math.random() * 5) + 1;
   valuerating = Math.floor(Math.random() * 5) + 1;
+  avgrating = (foodrating + servicerating + ambiencerating + valuerating) / 4;
   noise = Math.floor(Math.random() * 10) + 1;
   recommended = Math.random() >= 0.5;
   reviewdate = Number(today.clone().subtract(Math.random() * 700, 'day').format('X'));
   reviewtext = faker.lorem.paragraph(2);
 
-  return `${restaurantid},${userid},${foodrating},${servicerating},${ambiencerating},${valuerating},${noise},${recommended},${reviewdate},"${reviewtext}"\n`;
+  return `${restaurantid},${userid},${foodrating},${servicerating},${ambiencerating},${valuerating},${avgrating},${noise},${recommended},${reviewdate},"${reviewtext}"\n`;
 }
 
 const seeding = () => {
@@ -49,7 +51,7 @@ const seeding = () => {
   let data;
 
   const writeFile = fs.createWriteStream('./postgres_reviews.csv');
-  writeFile.write('restaurantid,userid,foodrating,servicerating,ambiencerating,valuerating,noise,recommended,reviewdate,reviewtext\n');
+  writeFile.write('restaurantid,userid,foodrating,servicerating,ambiencerating,valuerating,avgrating,noise,recommended,reviewdate,reviewtext\n');
 
 
   const write = () => {

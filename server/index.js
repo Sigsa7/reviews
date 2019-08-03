@@ -1,13 +1,15 @@
+const newrelic = require('newrelic');
 const express = require('express');
 const expressStaticGzip = require('express-static-gzip');
 const path = require('path');
 const router = require('./Router.js');
-const newrelic = require('newrelic');
+const morgan = require('morgan');
 
 const app = express();
 
 const db = require('./db/index.js');
 
+app.use(morgan('dev'));
 app.use(express.json());
 app.set('port', 3004);
 

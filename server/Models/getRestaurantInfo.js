@@ -1,66 +1,58 @@
 const pg = require('../db');
+const redis = require('../db/redisConnection');
+const { generateRestaurantInfoQuery, generateReviewListingQuery } = require('./helperFunctions');
 
-const getRestaurantInfo = (req, res) => {
+const getRestaurantInfo = async (req, res) => {
   const { restaurantId } = req.params;
 
-  const { sort, keyword, star } = req.body;
-  let orderByStr = '';
-  let selectStr = orderByStr;
-  let sortDirection = '';
-  let keywordStr = '';
-  let starStr = '';
+  const queryInfo = generateRestaurantInfoQuery(restaurantId);
+  const queryReviews = generateReviewListingQuery(restaurantId);
 
-  if (sort === 'highest rating') {
-    orderByStr = 'CAST((reviews.foodrating+reviews.servicerating+reviews.ambiencerating+reviews.valuerating) AS FLOAT)/4';
-    sortDirection = ' DESC,';
-  }
+  return redis.get(queryInfo.text, async (err, infoResult) => {
+    if (infoResult) {
+      try {
+        const restaurantInfo = JSON.parse(infoResult);
 
-  if (sort === 'lowest rating') {
-    orderByStr = 'CAST((reviews.foodrating+reviews.servicerating+reviews.ambiencerating+reviews.valuerating) AS FLOAT)/4';
-    sortDirection = ' ASC,';
-  }
+        redis.get(queryReviews.text, async (err, reviewsResult) => {
+          try {
+            let reviews;
+            if (reviewsResult) {
+              reviews = JSON.parse(reviewsResult);
+            } else {
+              reviews = await pg.query(queryReviews);
+              redis.setex(queryReviews.text, 1800, JSON.stringify(reviews));
+            }
 
-  if (keyword !== undefined) {
-    for (let i = 0; i < keyword.length; i ++) {
-      keywordStr += `AND reviews.reviewText LIKE '%${keyword[i]}%' `;
-    }
+            const data = {
+              restaurantInfo: restaurantInfo.rows,
+              reviews: reviews.rows,
+            };
+            return res.status(200).json(data);
+          } catch (e) {
+            return res.status(500).json(e);
+          }
+        });
+      } catch (e) {
+        return res.status(500).json(e);
+      }
 
-    keywordStr = keywordStr.slice(0, -1);
-  }
-
-  if (orderByStr !== '') {
-    selectStr = ', ' + orderByStr + ' AS avg_overal_from_reviews';
-  }
-
-  if (star !== undefined) {
-    starStr = `AND CAST((reviews.foodrating+reviews.servicerating+reviews.ambiencerating+reviews.valuerating) AS FLOAT)/4 >= ${star} AND CAST((reviews.foodrating+reviews.servicerating+reviews.ambiencerating+reviews.valuerating) AS FLOAT)/4 < ${star + 1}`;
-  }
-
-  const query = {
-    text: `
-      SELECT *${selectStr} FROM restaurants
-        INNER JOIN reviews
-          ON restaurants.id=reviews.restaurantid
-        INNER JOIN users
-          ON users.id=reviews.userid
-        WHERE
-          restaurants.id=$1
-          ${keywordStr}
-          ${starStr}
-        ORDER BY
-          ${orderByStr} ${sortDirection}
-          reviews.reviewdate DESC
-        LIMIT 10;
-    `,
-    values: [ restaurantId ],
-  };
-
-  pg.query(query, (err, data) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json(err);
     } else {
-      res.status(200).json(data.rows);
+      try {
+        const restaurantInfo = await pg.query(queryInfo);
+        const reviews = await pg.query(queryReviews);
+        redis.setex(queryInfo.text, 1800, JSON.stringify(restaurantInfo));
+        redis.setex(queryReviews.text, 1800, JSON.stringify(reviews));
+
+        const data = {
+          restaurantInfo: restaurantInfo.rows,
+          reviews: reviews.rows,
+        };
+
+        return res.status(200).json(data);
+
+      } catch (e) {
+        return res.status(500).json(e);
+      }
     }
   });
 };
