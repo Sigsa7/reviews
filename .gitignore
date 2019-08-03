@@ -12,3 +12,6 @@ newrelic.js
 newrelic_agent.log
 dump.rdb
 sigsa7_review.pem
+postgres_user.csv
+postgres_restaurants.csv
+postgres_reviews.csv

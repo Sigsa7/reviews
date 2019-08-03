@@ -34,6 +34,10 @@ const seeding = () => {
     do {
       i--;
 
+      if (i % 1000000) {
+        console.log(i);
+      }
+
       data = generateRecord();
       if (i === 0) {
         // Last time!
