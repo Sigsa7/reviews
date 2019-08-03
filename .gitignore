@@ -11,3 +11,4 @@ server/db/mongoUsers.csv
 newrelic.js
 newrelic_agent.log
 dump.rdb
+sigsa7_review.pem
