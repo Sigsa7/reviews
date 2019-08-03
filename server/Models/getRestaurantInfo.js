@@ -1,71 +1,55 @@
 const pg = require('../db');
 const redis = require('../db/redisConnection');
+const { generateRestaurantInfoQuery, generateReviewListingQuery } = require('./helperFunctions');
 
 const getRestaurantInfo = async (req, res) => {
   const { restaurantId } = req.params;
 
-  const { sort, keywords, star } = req.body;
-  let comma = '';
-  let orderByStr = '';
-  let selectStr = '';
-  let sortDirection = '';
-  let keywordStr = '';
-  let starStr = '';
+  const queryInfo = generateRestaurantInfoQuery(restaurantId);
+  const queryReviews = generateReviewListingQuery(restaurantId);
 
-  if (sort === 'highest rating') {
-    comma = ',';
-    orderByStr = 'CAST((reviews.foodrating+reviews.servicerating+reviews.ambiencerating+reviews.valuerating) AS FLOAT)/4  AS avg_overal_from_reviews';
-    sortDirection = ' DESC,';
-  } else if (sort === 'lowest rating') {
-    comma = ',';
-    orderByStr = 'CAST((reviews.foodrating+reviews.servicerating+reviews.ambiencerating+reviews.valuerating) AS FLOAT)/4 AS avg_overal_from_reviews';
-    sortDirection = ' ASC,';
-  }
+  return redis.get(queryInfo.text, async (err, infoResult) => {
+    if (infoResult) {
+      try {
+        const restaurantInfo = JSON.parse(infoResult);
 
-  if (keywords!== undefined || keywords.length !== 0) {
-    for (let i = 0; i < keywords.length; i ++) {
-      keywordStr += `AND reviews.reviewText LIKE '%${keywords[i]}%' `;
-    }
+        redis.get(queryReviews.text, async (err, reviewsResult) => {
+          try {
+            let reviews;
+            if (reviewsResult) {
+              reviews = JSON.parse(reviewsResult);
+            } else {
+              reviews = await pg.query(queryReviews);
+              redis.setex(queryReviews.text, 1800, JSON.stringify(reviews));
+            }
 
-    keywordStr = keywordStr.trim();
-  }
-
-  if (orderByStr !== '') {
-    selectStr = 'avg_overal_from_reviews';
-  }
-
-  if (star !== 0) {
-    starStr = `AND CAST((reviews.foodrating+reviews.servicerating+reviews.ambiencerating+reviews.valuerating) AS FLOAT)/4 >= ${star} AND CAST((reviews.foodrating+reviews.servicerating+reviews.ambiencerating+reviews.valuerating) AS FLOAT)/4 < ${star + 1}`;
-  }
-
-  const query = {
-    text: `
-      SELECT * ${comma} ${orderByStr} FROM restaurants
-        INNER JOIN reviews
-          ON restaurants.id=reviews.restaurantid
-        INNER JOIN users
-          ON users.id=reviews.userid
-        WHERE
-          restaurants.id=${restaurantId}
-          ${keywordStr}
-          ${starStr}
-        ORDER BY
-          ${selectStr} ${sortDirection}
-          reviews.reviewdate DESC
-        LIMIT 10;
-    `,
-  };
-
-  return redis.get(query.text, async (err, result) => {
-    if (result) {
-      const jsonResult = JSON.parse(result);
-      return res.status(200).json(jsonResult.rows);
+            const data = {
+              restaurantInfo: restaurantInfo.rows,
+              reviews: reviews.rows,
+            };
+            return res.status(200).json(data);
+          } catch (e) {
+            return res.status(500).json(e);
+          }
+        });
+      } catch (e) {
+        return res.status(500).json(e);
+      }
 
     } else {
       try {
-        const data = await pg.query(query);
-        redis.setex(query.text, 1800, JSON.stringify(data));
-        return res.status(200).json(data.rows);
+        const restaurantInfo = await pg.query(queryInfo);
+        const reviews = await pg.query(queryReviews);
+        redis.setex(queryInfo.text, 1800, JSON.stringify(restaurantInfo));
+        redis.setex(queryReviews.text, 1800, JSON.stringify(reviews));
+
+        const data = {
+          restaurantInfo: restaurantInfo.rows,
+          reviews: reviews.rows,
+        };
+
+        return res.status(200).json(data);
+
       } catch (e) {
         return res.status(500).json(e);
       }

@@ -15,11 +15,13 @@ const createReivews = async (req, res) => {
     reviewText,
   } = req.body;
 
+  const avgrating = (foodRating + serviceRating + ambienceRating + valueRating) / 4;
+
   const query = {
     name: 'create-new-review',
     text: `
-      INSERT INTO reviews (restaurantId, userId, foodRating, serviceRating, ambienceRating, valueRating, reviewDate, noise, recommended, reviewText)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      INSERT INTO reviews (restaurantId, userId, foodRating, serviceRating, ambienceRating, valueRating, avgrating, reviewDate, noise, recommended, reviewText)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
       RETURNING *`,
     values: [
       restaurantId,
@@ -28,6 +30,7 @@ const createReivews = async (req, res) => {
       serviceRating,
       ambienceRating,
       valueRating,
+      avgrating,
       reviewDate,
       noise,
       recommended,
@@ -36,9 +39,10 @@ const createReivews = async (req, res) => {
   };
 
   try {
-    const data = pg.query(query);
-    res.status(201).json(data.rows);
+    pg.query(query);
+    res.status(201).json('Posted');
   } catch (e) {
+    console.log(e)
     res.status(500).json(e);
   }
 
