@@ -6,16 +6,19 @@ config:
   phases:
     - duration: 30
       arrivalRate: 10
-      rampTo: 100
 scenarios:
   - name: "Get Reviews and info for A Restaurant"
     flow:
       - function: "generateGetRequestData"
       - loop:
         - get:
-            url: "/{{ restaurantId }}/reviews"
+            url: "/{{ restaurantId }}/reviews/reviewListing"
             json:
               sort: "{{ sort }}"
               star: "{{ star }}"
               keywords: "{{ keywords }}"
+        count: 100
+      - loop:
+        - get:
+            url: "/{{ restaurantId }}/reviews/restaurantInfo"
         count: 100
