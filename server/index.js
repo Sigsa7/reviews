@@ -3,11 +3,13 @@ const express = require('express');
 const expressStaticGzip = require('express-static-gzip');
 const path = require('path');
 const router = require('./Router.js');
+const morgan = require('morgan');
 
 const app = express();
 
 const db = require('./db/index.js');
 
+app.use(morgan('dev'));
 app.use(express.json());
 app.set('port', 3004);
 
