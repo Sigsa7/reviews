@@ -14,3 +14,4 @@ sigsa7_review.pem
 postgres_user.csv
 postgres_restaurants.csv
 postgres_reviews.csv
+reviews_part_*
