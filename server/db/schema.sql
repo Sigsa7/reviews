@@ -42,11 +42,11 @@ CREATE TABLE reviews (
   reviewText varchar(1000) NOT NULL
 );
 
-COPY users(userName, userLocation) from './postgres_user.csv' DELIMITER ',' CSV HEADER;
+COPY users(userName, userLocation) from 'postgres_user.csv' DELIMITER ',' CSV HEADER;
 
-COPY restaurants(restaurantName, neighborhood, keywords,avgOverall,avgFood,avgService,avgAmbience,avgValue,avgNoise,avgRecommend) from './postgres_restaurants.csv' DELIMITER ',' CSV HEADER;
+COPY restaurants(restaurantName, neighborhood, keywords,avgOverall,avgFood,avgService,avgAmbience,avgValue,avgNoise,avgRecommend) from 'postgres_restaurants.csv' DELIMITER ',' CSV HEADER;
 
-COPY reviews(restaurantid,userid,foodrating,servicerating,ambiencerating,valuerating,avgrating,noise,recommended,reviewdate,reviewtext) from './postgres_reviews.csv' DELIMITER ',' CSV HEADER;
+COPY reviews(restaurantid,userid,foodrating,servicerating,ambiencerating,valuerating,avgrating,noise,recommended,reviewdate,reviewtext) from 'postgres_reviews.csv' DELIMITER ',' CSV HEADER;
 
 CREATE index idx_restaurant_id ON reviews(restaurantId);
 CREATE index idx_user_id ON reviews(userId);
