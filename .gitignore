@@ -8,7 +8,6 @@ server/db/postgres_reviews.csv
 server/db/mongoRestaurant.csv
 server/db/mongoReviews.csv
 server/db/mongoUsers.csv
-newrelic.js
 newrelic_agent.log
 dump.rdb
 sigsa7_review.pem
