@@ -4,8 +4,8 @@ const { generateReviewListingQuery } = require('./helperFunctions');
 
 const getRestaurantReviewListing = async (req, res) => {
   const { restaurantId } = req.params;
+  const { sort, keywords, star } = req.query;
 
-  const { sort, keywords, star } = req.body;
   const query = generateReviewListingQuery(restaurantId, sort, keywords, star);
 
   return redis.get(query.text, async (err, result) => {

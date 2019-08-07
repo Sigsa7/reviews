@@ -10,7 +10,7 @@
   "scripts": {
     "react-dev": "webpack",
     "test": "jest --coverage",
-    "start": "node ./server/index.js",
+    "start": "nodemon ./server/index.js",
     "load-db": "psql < ./server/db/schema.sql"
   },
   "dependencies": {
