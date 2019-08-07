@@ -25,7 +25,7 @@ while (i > 0) {
     randomKeywordCount --;
   }
 
-  values.push([JSON.stringify(sort), JSON.stringify(keywords), JSON.stringify(star)]);
+  values.push([sort, keywords, star]);
 
   i --;
 }
