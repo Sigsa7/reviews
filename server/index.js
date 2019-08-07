@@ -18,7 +18,7 @@ app.get('/loaderio-bc5ce11e94267dcc5ea0be046c5b74a0', (req, res) => {
 });
 
 app.get('/payload', (req, res) => {
-  res.status(200).sendFile('../generatePayload.json');
+  res.status(200).sendFile('/home/ec2-user/reviews/generatePayload.json');
 });
 
 app.use('/', expressStaticGzip(path.join(__dirname, '../client/dist'), {
