@@ -17,6 +17,10 @@ app.get('/loaderio-bc5ce11e94267dcc5ea0be046c5b74a0', (req, res) => {
   res.status(200).send('loaderio-bc5ce11e94267dcc5ea0be046c5b74a0');
 });
 
+app.get('/payload', (req, res) => {
+  res.status(200).sendFile('../generatePayload.json');
+});
+
 app.use('/', expressStaticGzip(path.join(__dirname, '../client/dist'), {
   enableBrotli: true,
   orderPreference: ['br', 'gz']
