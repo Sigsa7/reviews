@@ -10,6 +10,7 @@ server/db/mongoReviews.csv
 server/db/mongoUsers.csv
 newrelic_agent.log
 dump.rdb
+review_load_balancer.pem
 sigsa7_review.pem
 postgres_user.csv
 postgres_restaurants.csv
