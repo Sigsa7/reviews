@@ -17,6 +17,7 @@ const getRestaurantInfo = async (req, res) => {
           try {
             let reviews;
             if (reviewsResult) {
+              console.log('from cache restInfo')
               reviews = JSON.parse(reviewsResult);
             } else {
               reviews = await pg.query(queryReviews);

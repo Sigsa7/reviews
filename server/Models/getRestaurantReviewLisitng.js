@@ -10,6 +10,7 @@ const getRestaurantReviewListing = async (req, res) => {
 
   return redis.get(query.text, async (err, result) => {
     if (result) {
+      console.log('from cache reviewList')
       const jsonResult = JSON.parse(result);
       return res.status(200).json(jsonResult.rows);
 
