@@ -9,9 +9,11 @@ const app = express();
 
 const db = require('./db/index.js');
 
-app.use(morgan('combined', {
-  skip: function (req, res) { return res.statusCode < 400 }
-}));
+app.use(morgan('dev'));
+
+// app.use(morgan('combined', {
+//   skip: function (req, res) { return res.statusCode < 400 }
+// }));
 app.use(express.json());
 app.set('port', 3004);
 
