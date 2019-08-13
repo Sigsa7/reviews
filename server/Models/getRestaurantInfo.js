@@ -17,7 +17,8 @@ const getRestaurantInfo = async (req, res) => {
           try {
             let reviews;
             if (reviewsResult) {
-              reviews = JSON.parse(reviewsResult);
+              reviews = reviewsResult;
+              // reviews = JSON.parse(reviewsResult);
             } else {
               reviews = await pg.query(queryReviews);
               redis.setex(queryReviews.text, 1800, JSON.stringify(reviews));
