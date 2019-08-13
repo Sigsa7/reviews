@@ -10,8 +10,7 @@ const getRestaurantReviewListing = async (req, res) => {
 
   return redis.get(query.text, async (err, result) => {
     if (result) {
-      const jsonResult = JSON.parse(result);
-      return res.status(200).json(jsonResult.rows);
+      return res.status(200).json(result);
 
     } else {
       try {

@@ -11,13 +11,13 @@ const getRestaurantInfo = async (req, res) => {
   return redis.get(queryInfo.text, async (err, infoResult) => {
     if (infoResult) {
       try {
-        const restaurantInfo = JSON.parse(infoResult);
+        const restaurantInfo = infoResult;
 
         redis.get(queryReviews.text, async (err, reviewsResult) => {
           try {
             let reviews;
             if (reviewsResult) {
-              reviews = JSON.parse(reviewsResult);
+              reviews = reviewsResult;
             } else {
               reviews = await pg.query(queryReviews);
               redis.setex(queryReviews.text, 1800, JSON.stringify(reviews));
