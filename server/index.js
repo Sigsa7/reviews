@@ -9,7 +9,6 @@ const app = express();
 
 const db = require('./db/index.js');
 
-app.use(morgan('dev'));
 app.use(express.json());
 app.set('port', 3004);
 
