@@ -12,8 +12,8 @@ const db = require('./db/index.js');
 app.use(express.json());
 app.set('port', 3004);
 
-app.get('/loaderio-bc5ce11e94267dcc5ea0be046c5b74a0', (req, res) => {
-  res.status(200).send('loaderio-bc5ce11e94267dcc5ea0be046c5b74a0');
+app.get('/loaderio-546c782f498490c34bd88c1c3a88ed5c', (req, res) => {
+  res.status(200).send('loaderio-546c782f498490c34bd88c1c3a88ed5c');
 });
 
 app.get('/payload', (req, res) => {
